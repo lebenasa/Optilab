@@ -1,0 +1,33 @@
+Here is short summary of available methods and properties:
+
+Initialize - initializes and connects to controller
+Dispose - disposes connection to controller
+OnUpdate - event that triggers when new data from controller is available
+VersionHW - returns controller firmware version
+VersionHWRequired - returns required controller firmware version
+VersionSW - returns software version
+VersionAPI - returns API version
+Serial - returns conroller serial number
+LicenseValid - returns TRUE if license is valid
+StepsPerUnit - returns "StepsPerUnit" setting value
+Units - returns "Units" setting value
+BufferFree - returns amount of free buffer
+BufferSize - return buffer size
+Position - returns current position
+Speed - returns current speed
+EStop - return "E-Stop" status
+SendEStop - sends "E-Sstop" command
+SendStop - sends "Stop" command
+Pause - return "Pause" status
+SendPause - sends "Pause" command
+Limit - returns limit switches status
+LimitRaw - returns limit switches status
+Jog - returns jog switches status
+JogRaw - returns jog switches status
+Output - returns output pin status
+SendOutput - sets output pins
+SendSetPos - sets new position
+SendMoveDelta - moves axes to new position
+SendMovePos - move axes to new position
+SendMoveDeltaAxis - moves one axes to new position
+SendMovePosAxis - moves one axes to new position

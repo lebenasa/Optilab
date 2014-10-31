@@ -1,0 +1,92 @@
+#mainPanel {
+  margin: 0;
+  padding: 0;
+}
+
+#systemPanel {
+  margin: 0;
+  padding: 0;
+}
+
+#centralWidget {
+  background: #fff; /* Window background color */
+}
+
+#mainPanelScrollArea {
+  border: none;
+}
+
+/* System buttons */
+#pushButtonMaximize, #pushButtonMinimize, #pushButtonClose, #pushButtonRibbon, #pushButtonFullscreen, #serialCapStop {
+  border: none;
+  width: 14px;
+  height: 14px;
+}
+
+#pushButtonMaximize {
+    padding: 0 8px 0 8px;
+}
+
+#pushButtonMinimize {
+  padding: 0 0 0 0;
+}
+
+#pushButtonClose {
+  padding: 0 6px 0 0;
+}
+
+#pushButtonFullscreen {
+	padding: 0 12px 0 0;
+}
+
+#pushButtonRibbon {
+	padding: 0 8px 0 0;
+}
+
+#pushButtonMaximize {
+  image: url(:/Icons/Maximize.png);
+}
+
+#pushButtonMaximize:hover {
+  image: url(:/Icons/MaximizeHover.png);
+}
+
+#pushButtonMinimize {
+  image: url(:/Icons/Minimize.png);
+}
+
+#pushButtonMinimize:hover {
+  image: url(:/Icons/MinimizeHover.png);
+}
+
+#pushButtonClose {
+  image: url(:/Icons/Close.png);
+}
+
+#pushButtonClose:hover {
+  image: url(:/Icons/CloseHover.png);
+}
+
+#pushButtonRibbon {
+	image: url(:/Icons/HideRibbon.png);
+}
+
+#pushButtonRibbon:hover {
+	image: url(:/Icons/HideRibbon-hover.png);
+}
+
+#pushButtonFullscreen {
+	image: url(:/Icons/Fullscreen.png);
+}
+
+#pushButtonFullscreen:hover {
+	image: url(:/Icons/Fullscreen-hover.png);
+}
+
+#serialCapStop {
+	image: url(:/Icons/Stop.png);
+}
+
+#serialCapStop:pressed {
+	image: url(:/Icons/Stop-pressed.png);
+}
