@@ -6,6 +6,7 @@ import QtQuick.Controls.Styles 1.1
 Rectangle {
     width: 240
     height: 150
+    property bool keylock: false
 
     Rectangle {
         id: dummy
@@ -26,6 +27,20 @@ Rectangle {
         }
         MouseArea {
             anchors.fill: parent
+            onPressed: {
+                if (!keylock) {
+                    keylock = true
+                    up.pushed = true
+                    stepper.jogUp()
+                }
+            }
+            onReleased: {
+                if(up.pushed == true) {
+                    keylock = false
+                    up.pushed = false
+                    stepper.stop()
+                }
+            }
         }
     }
     StepperButton {
@@ -38,6 +53,20 @@ Rectangle {
         rotation: 90
         MouseArea {
             anchors.fill: parent
+            onPressed: {
+                if (!keylock) {
+                    keylock = true
+                    right.pushed = true
+                    stepper.jogRight()
+                }
+            }
+            onReleased: {
+                if(right.pushed == true) {
+                    keylock = false
+                    right.pushed = false
+                    stepper.stop()
+                }
+            }
         }
     }
     StepperButton {
@@ -49,6 +78,20 @@ Rectangle {
         rotation: 180
         MouseArea {
             anchors.fill: parent
+            onPressed: {
+                if (!keylock) {
+                    keylock = true
+                    down.pushed = true
+                    stepper.jogDown()
+                }
+            }
+            onReleased: {
+                if(down.pushed == true) {
+                    keylock = false
+                    down.pushed = false
+                    stepper.stop()
+                }
+            }
         }
     }
     StepperButton {
@@ -61,6 +104,20 @@ Rectangle {
         rotation: 270
         MouseArea {
             anchors.fill: parent
+            onPressed: {
+                if (!keylock) {
+                    keylock = true
+                    left.pushed = true
+                    stepper.jogLeft()
+                }
+            }
+            onReleased: {
+                if(left.pushed == true) {
+                    keylock = false
+                    left.pushed = false
+                    stepper.stop()
+                }
+            }
         }
     }
 
@@ -87,6 +144,20 @@ Rectangle {
             onExited: {
                 tooltipUpAnimation.stop()
                 tooltipUp.opacity = 0
+            }
+            onPressed: {
+                if (!keylock) {
+                    keylock = true
+                    zUp.pushed = true
+                    stepper.jogZUp()
+                }
+            }
+            onReleased: {
+                if(zUp.pushed == true) {
+                    keylock = false
+                    zUp.pushed = false
+                    stepper.stop()
+                }
             }
         }
         Rectangle {
@@ -136,6 +207,20 @@ Rectangle {
             onExited: {
                 tooltipDownAnimation.stop()
                 tooltipDown.opacity = 0
+            }
+            onPressed: {
+                if (!keylock) {
+                    keylock = true
+                    zDown.pushed = true
+                    stepper.jogZDown()
+                }
+            }
+            onReleased: {
+                if(zDown.pushed == true) {
+                    keylock = false
+                    zDown.pushed = false
+                    stepper.stop()
+                }
             }
         }
         Rectangle {
