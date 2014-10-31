@@ -248,12 +248,33 @@ Rectangle {
         }
     }
 
+    focus: true
+    property bool rightPressed: false
+    Timer {
+        interval: 500; running: true; repeat: true
+        onTriggered: rightPressed = false
+    }
+    onRightPressedChanged: {
+        if (rightPressed) stepper.jogRight()
+        else {
+            rightTimer.running = true
+        }
+    }
+    Timer {
+        id: rightTimer
+        interval: 800
+        onTriggered: {
+            if (!rightPressed) stepper.stop()
+        }
+    }
+
     Keys.onPressed: {
         if (event.key === Qt.Key_Up) {
             event.accepted = true
         }
         else if (event.key === Qt.Key_Right) {
             event.accepted = true
+            rightPressed = true
         }
         else if (event.key === Qt.Key_Down) {
             event.accepted = true
