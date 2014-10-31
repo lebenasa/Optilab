@@ -9,8 +9,9 @@ class Stepper : public QObject
 	QString msg;
 	double _x, _y, _z;
 	long _output, _bufferFree, _bufferSize, _jog, _limit;
-	bool _stop;
+	bool _stop, xLimit, yLimit, zLimit;
 	bool m_isActive;
+	int movementCode;
 
 	QTimer* statusUpdater;
 public:
@@ -45,6 +46,8 @@ public slots:
 	void jogZUp();
 	void jogZDown();
 	void stop();
+
+	void initPosition();
 };
 
 #endif // STEPPER_H

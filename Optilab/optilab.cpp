@@ -561,5 +561,6 @@ void Optilab::setStepper(Stepper* step) {
 		stepperControl->setStepper(stepper);
 		stepperDebug->setStepper(stepper);
 		connect(stepper, &Stepper::stepperUpdated, stepperDebug, &StepperDebug::updateStatus);
+		stepper->initPosition();
 	}
 }

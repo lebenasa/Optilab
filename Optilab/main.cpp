@@ -25,7 +25,11 @@ int main(int argc, char *argv[])
 	Stepper* stepper = new Stepper();
 	splash->showMessage(stepper->message(), Qt::AlignBottom | Qt::AlignHCenter);
 	a->processEvents();
-	//if (stepper->message().contains("Failed")) delete stepper;
+	//splash->showMessage("Initializing position. Please wait. . .", Qt::AlignBottom | Qt::AlignCenter);
+	//a->processEvents();
+	//stepper->initPosition();
+	//splash->showMessage("Done!", Qt::AlignBottom | Qt::AlignCenter);
+	//a->processEvents();
 
 	HBRUSH windowBackground = CreateSolidBrush(RGB(255, 255, 255));
 	NativeWindow window(a, windowBackground, 0, 0, 1024, 720);
