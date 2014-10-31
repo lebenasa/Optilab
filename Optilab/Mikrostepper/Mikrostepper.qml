@@ -26,8 +26,6 @@ Rectangle {
         }
         MouseArea {
             anchors.fill: parent
-            onPressed: procPress(0)
-            onReleased: procRelease(0)
         }
     }
     StepperButton {
