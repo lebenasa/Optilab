@@ -24,6 +24,7 @@ StepperControl::StepperControl(QWidget *parent)
 
 StepperControl::~StepperControl()
 {	
+	stepper = NULL;
 	Optilab::saveSettings("CONTROL_LAST_POS", lastPos);
 }
 

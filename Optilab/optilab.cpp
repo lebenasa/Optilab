@@ -12,6 +12,7 @@
 #include "videopreview.h"
 
 #include "steppercontrol.h"
+#include "stepperdebug.h"
 
 QSize screenSize;
 cv::VideoWriter* recorder;
@@ -99,6 +100,8 @@ Optilab::Optilab(QWidget *parent)
 	stepperControl = new StepperControl(this);
 	stepperControl->show();
 	//addDockWidget(Qt::RightDockWidgetArea, stepperControl);
+	stepperDebug = new StepperDebug(this);
+	stepperDebug->show();
 }
 
 Optilab::~Optilab()
@@ -556,5 +559,7 @@ void Optilab::setStepper(Stepper* step) {
 	if (step) {
 		stepper = step;
 		stepperControl->setStepper(stepper);
+		stepperDebug->setStepper(stepper);
+		connect(stepper, &Stepper::stepperUpdated, stepperDebug, &StepperDebug::updateStatus);
 	}
 }

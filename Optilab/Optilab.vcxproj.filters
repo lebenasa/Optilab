@@ -119,6 +119,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_stepper.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="stepperdebug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_stepperdebug.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_stepperdebug.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -129,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="nativewindow.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_StepperDebug.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +172,12 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="stepper.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="StepperDebug.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="stepperdebug.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

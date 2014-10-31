@@ -3,13 +3,16 @@
 #include "api_wrapper.cpp"
 
 CEventHandler* pCncApi = NULL;
-Stepper* stepper;
+Stepper* stepper = NULL;
 
 Stepper::Stepper(QObject *parent)
 	: QObject(parent)
 {
 	stepper = this;
 	initStepper();
+	statusUpdater = new QTimer(this);
+	connect(statusUpdater, &QTimer::timeout, this, &Stepper::updateStatus);
+	statusUpdater->start(250);
 }
 
 Stepper::~Stepper()
@@ -20,9 +23,8 @@ Stepper::~Stepper()
 	pCncApi->mObject = 0;
 }
 
-void ControllerEventCallBack() {
-	if (stepper)
-		stepper->update();
+void __cdecl ControllerEventCallBack() {
+	stepper->updateStatus();
 }
 
 bool Stepper::initStepper() {
@@ -53,7 +55,7 @@ bool Stepper::initStepper() {
 	return true;
 }
 
-void Stepper::update() {
+void Stepper::updateStatus() {
 	ICoord* coord = 0;
 	coord = pCncApi->mObject->GetPosition();
 	_x = coord->GetX();

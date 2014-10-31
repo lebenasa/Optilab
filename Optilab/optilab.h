@@ -9,6 +9,7 @@
 
 class StepperControl;
 class Stepper;
+class StepperDebug;
 
 enum ResolutionLevel {
 	Highest, High, Mid, Low
@@ -127,6 +128,7 @@ private:
 
 	StepperControl* stepperControl;
 	Stepper* stepper;
+	StepperDebug* stepperDebug;
 
 protected:
 	void resizeEvent(QResizeEvent* event);

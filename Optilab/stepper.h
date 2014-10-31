@@ -11,12 +11,14 @@ class Stepper : public QObject
 	long _output, _bufferFree, _bufferSize, _jog, _limit;
 	bool _stop;
 	bool m_isActive;
+
+	QTimer* statusUpdater;
 public:
 	Stepper(QObject *parent=0);
 	~Stepper();
 
 	QString message() { return msg; }
-	void update();
+	void updateStatus();
 
 	double X() { return _x; }
 	double Y() { return _y; }
