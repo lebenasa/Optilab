@@ -177,7 +177,7 @@ void Optilab::setStreamResolution(int res) {
 		status = CameraPlay();
 		CameraSetB2RGBMode(DS_B2RGB_MODE::B2RGB_MODE_LINE);
 		CameraSetColorEnhancement(TRUE);
-		CameraSetLightFrquency(DS_LIGHT_FREQUENCY::LIGHT_FREQUENCY_60HZ);
+		//CameraSetLightFrquency(DS_LIGHT_FREQUENCY::LIGHT_FREQUENCY_60HZ);
 		CameraSetFrameSpeed(DS_FRAME_SPEED::FRAME_SPEED_NORMAL);
 		emit cameraInitialized();
 		if (res == 0)
@@ -561,6 +561,13 @@ void Optilab::setStepper(Stepper* step) {
 		stepperControl->setStepper(stepper);
 		stepperDebug->setStepper(stepper);
 		connect(stepper, &Stepper::stepperUpdated, stepperDebug, &StepperDebug::updateStatus);
-		stepper->initPosition();
+		//stepper->initPosition();
+		connect(ui.screen, &CameraWidget::jogUp, stepper, &Stepper::jogUp);
+		connect(ui.screen, &CameraWidget::jogRight, stepper, &Stepper::jogRight);
+		connect(ui.screen, &CameraWidget::jogDown, stepper, &Stepper::jogDown);
+		connect(ui.screen, &CameraWidget::jogLeft, stepper, &Stepper::jogLeft);
+		connect(ui.screen, &CameraWidget::jogZUp, stepper, &Stepper::jogZUp);
+		connect(ui.screen, &CameraWidget::jogZDown, stepper, &Stepper::jogZDown);
+		connect(ui.screen, &CameraWidget::stop, stepper, &Stepper::stop);
 	}
 }

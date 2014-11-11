@@ -40,7 +40,7 @@ void __cdecl ControllerEventCallBack() {
 bool Stepper::initStepper() {
 	pCncApi = new CEventHandler;
 	pCncApi->pEvtCallBack = ControllerEventCallBack;
-	pCncApi->mObject.CreateInstance(__uuidof(CNC));
+	HRESULT hr = pCncApi->mObject.CreateInstance(__uuidof(CNC));
 	if (pCncApi->mObject == 0) {
 		delete pCncApi;
 		pCncApi = NULL;
@@ -53,7 +53,7 @@ bool Stepper::initStepper() {
 	long result;
 	ICoord* pCoord = 0;
 
-	CoInitialize(NULL);
+	hr = CoInitialize(NULL);
 
 	result = pCncApi->mObject->Initialize();
 	if (result == 0) return false;
@@ -69,13 +69,6 @@ void Stepper::updateStatus() {
 	ICoord* coord = 0;
 	coord = pCncApi->mObject->GetPosition();
 	_x = coord->GetX();
-	if (_x > 20.0) {
-		xLimit = true;
-		if (movementCode == Right) stop();
-	}
-	else {
-		xLimit = false;
-	}
 	_y = coord->GetY();
 	_z = coord->GetZ();
 
@@ -116,37 +109,37 @@ void Stepper::initPosition() {
 const double DIST = 500;
 const double SPEED = 100;
 void Stepper::jogUp() {
-	if (!pCncApi->mObject && pCncApi->mObject->GetBufferFree() < 13) return;
+	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, DIST, SPEED, UnitsEnum_Millimeters);
 	movementCode = Up;
 }
 
 void Stepper::jogRight() {
-	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13 || xLimit) return;
+	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, DIST, SPEED, UnitsEnum_Millimeters);
 	movementCode = Right;
 }
 
 void Stepper::jogDown() {
-	if (!pCncApi->mObject && pCncApi->mObject->GetBufferFree() < 13) return;
+	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, -DIST, SPEED, UnitsEnum_Millimeters);
 	movementCode = Down;
 }
 
 void Stepper::jogLeft() {
-	if (!pCncApi->mObject && pCncApi->mObject->GetBufferFree() < 13) return;
+	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, -DIST, SPEED, UnitsEnum_Millimeters);
 	movementCode = Left;
 }
 
 void Stepper::jogZUp() {
-	if (!pCncApi->mObject && pCncApi->mObject->GetBufferFree() < 13) return;
+	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, DIST, SPEED, UnitsEnum_Millimeters);
 	movementCode = ZUp;
 }
 
 void Stepper::jogZDown() {
-	if (!pCncApi->mObject && pCncApi->mObject->GetBufferFree() < 13) return;
+	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, -DIST, SPEED, UnitsEnum_Millimeters);
 	movementCode = ZDown;
 }

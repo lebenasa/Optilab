@@ -19,8 +19,19 @@ private:
 	QGridLayout *screenLayout;
 	QWidget *screen;
 
+signals:
+	void jogUp();
+	void jogDown();
+	void jogRight();
+	void jogLeft();
+	void jogZUp();
+	void jogZDown();
+	void stop();
+
 protected:
 	void paintEvent(QPaintEvent*);
+	void keyPressEvent(QKeyEvent*);
+	void keyReleaseEvent(QKeyEvent*);
 };
 
 #endif // CAMERAWIDGET_H
