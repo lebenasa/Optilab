@@ -2,6 +2,7 @@
 #include "stepper.h"
 #include "api_wrapper.cpp"
 
+#include "QSettings"
 #include <chrono>
 #include <thread>
 #include <bitset>
@@ -17,8 +18,12 @@ Stepper::Stepper(QObject *parent)
 	: QObject(parent)
 {
 	stepper = this;
+	QSettings s("Miconos", "Optilab");
+	xLim = s.value("X_LIMIT", 100).toDouble();
+	yLim = s.value("Y_LIMIT", 100).toDouble();
+	zLim = s.value("Z_LIMIT", 100).toDouble();
+	_speed = s.value("SPEED", 100).toDouble();
 	initStepper();
-	xLimit = yLimit = zLimit = false;
 	movementCode = 0;
 	statusUpdater = new QTimer(this);
 	connect(statusUpdater, &QTimer::timeout, this, &Stepper::updateStatus);
@@ -78,12 +83,12 @@ void Stepper::updateStatus() {
 	_jog = pCncApi->mObject->GetJog();
 	_limit = pCncApi->mObject->GetLimit();
 
-	std::bitset<8> lim = _limit;
-	if (lim.at(2) == true) {
-		stop();
-		coord->X = 0.0;
-		pCncApi->mObject->SendSetPos(coord);
-	}
+	//std::bitset<8> lim = _limit;
+	//if (lim.at(2) == true) {
+	//	pCncApi->mObject->SendStop();
+	//	coord->X = 0.0;
+	//	pCncApi->mObject->SendSetPos(coord);
+	//}
 
 	coord->Release();
 	coord = NULL;
@@ -106,48 +111,55 @@ void Stepper::initPosition() {
 	//}
 }
 
-const double DIST = 500;
-const double SPEED = 100;
+//const double DIST = 500;
+//const double SPEED = 100;
 void Stepper::jogUp() {
-	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
-	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, DIST, SPEED, UnitsEnum_Millimeters);
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST = yLim - _y;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = Up;
 }
 
 void Stepper::jogRight() {
-	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
-	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, DIST, SPEED, UnitsEnum_Millimeters);
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST = xLim - _x;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = Right;
 }
 
 void Stepper::jogDown() {
-	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
-	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, -DIST, SPEED, UnitsEnum_Millimeters);
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST = 0 - _y;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = Down;
 }
 
 void Stepper::jogLeft() {
-	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
-	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, -DIST, SPEED, UnitsEnum_Millimeters);
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST = 0 - _x;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = Left;
 }
 
 void Stepper::jogZUp() {
-	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
-	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, DIST, SPEED, UnitsEnum_Millimeters);
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST = zLim - _z;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = ZUp;
 }
 
 void Stepper::jogZDown() {
-	if (!pCncApi->mObject || pCncApi->mObject->GetBufferFree() < 13) return;
-	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, -DIST, SPEED, UnitsEnum_Millimeters);
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST = 0 - _z;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = ZDown;
 }
 
-void Stepper::stop() {
+void Stepper::stop(int code) {
 	if (pCncApi->mObject) {
-		_stop = true;
-		pCncApi->mObject->SendStop();
-		movementCode = Idle;
+		if (code == movementCode || code == 0) {
+			pCncApi->mObject->SendStop();
+			movementCode = Idle;
+		}
 	}
 }

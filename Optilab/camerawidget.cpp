@@ -56,6 +56,12 @@ void CameraWidget::keyPressEvent(QKeyEvent* event) {
 	else if (event->key() == Qt::Key_PageDown) {
 		emit jogZDown();
 	}
+	else if (event->key() == Qt::Key_Plus) {
+		emit jogZUp();
+	}
+	else if (event->key() == Qt::Key_Minus) {
+		emit jogZDown();
+	}
 	QWidget::keyPressEvent(event);
 }
 
@@ -64,22 +70,28 @@ void CameraWidget::keyReleaseEvent(QKeyEvent* event) {
 
 	}
 	else if (event->key() == Qt::Key_Up) {
-		emit stop();
+		emit stop(1);
 	}
 	else if (event->key() == Qt::Key_Right) {
-		emit stop();
+		emit stop(2);
 	}
 	else if (event->key() == Qt::Key_Down) {
-		emit stop();
+		emit stop(3);
 	}
 	else if (event->key() == Qt::Key_Left) {
-		emit stop();
+		emit stop(4);
 	}
 	else if (event->key() == Qt::Key_PageUp) {
-		emit stop();
+		emit stop(5);
 	}
 	else if (event->key() == Qt::Key_PageDown) {
-		emit stop();
+		emit stop(6);
+	}
+	else if (event->key() == Qt::Key_Plus) {
+		emit stop(5);
+	}
+	else if (event->key() == Qt::Key_Minus) {
+		emit stop(6);
 	}
 	QWidget::keyPressEvent(event);
 }

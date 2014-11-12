@@ -98,7 +98,7 @@ Optilab::Optilab(QWidget *parent)
 
 	//OnScreen Control
 	stepperControl = new StepperControl(this);
-	stepperControl->show();
+	//stepperControl->show();
 	//addDockWidget(Qt::RightDockWidgetArea, stepperControl);
 	stepperDebug = new StepperDebug(this);
 	stepperDebug->show();

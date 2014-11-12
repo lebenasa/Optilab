@@ -26,7 +26,7 @@ signals:
 	void jogLeft();
 	void jogZUp();
 	void jogZDown();
-	void stop();
+	void stop(int);
 
 protected:
 	void paintEvent(QPaintEvent*);
