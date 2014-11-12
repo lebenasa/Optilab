@@ -568,6 +568,10 @@ void Optilab::setStepper(Stepper* step) {
 		connect(ui.screen, &CameraWidget::jogLeft, stepper, &Stepper::jogLeft);
 		connect(ui.screen, &CameraWidget::jogZUp, stepper, &Stepper::jogZUp);
 		connect(ui.screen, &CameraWidget::jogZDown, stepper, &Stepper::jogZDown);
+		connect(ui.screen, &CameraWidget::jogUR, stepper, &Stepper::jogUR);
+		connect(ui.screen, &CameraWidget::jogDR, stepper, &Stepper::jogDR);
+		connect(ui.screen, &CameraWidget::jogDL, stepper, &Stepper::jogDL);
+		connect(ui.screen, &CameraWidget::jogUL, stepper, &Stepper::jogUL);
 		connect(ui.screen, &CameraWidget::stop, stepper, &Stepper::stop);
 	}
 }

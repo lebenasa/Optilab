@@ -11,7 +11,7 @@ CEventHandler* pCncApi = NULL;
 Stepper* stepper = NULL;
 
 enum Movement {
-	Idle, Up, Right, Down, Left, ZUp, ZDown
+	Idle, Up, Right, Down, Left, ZUp, ZDown, UpRight, DownRight, DownLeft, UpLeft
 };
 
 Stepper::Stepper(QObject *parent)
@@ -115,7 +115,7 @@ void Stepper::initPosition() {
 //const double SPEED = 100;
 void Stepper::jogUp() {
 	if (!pCncApi->mObject || movementCode != Idle) return;
-	double DIST = yLim - _y;
+	double DIST = 0 - _y;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = Up;
 }
@@ -129,7 +129,7 @@ void Stepper::jogRight() {
 
 void Stepper::jogDown() {
 	if (!pCncApi->mObject || movementCode != Idle) return;
-	double DIST = 0 - _y;
+	double DIST = yLim - _y;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = Down;
 }
@@ -153,6 +153,70 @@ void Stepper::jogZDown() {
 	double DIST = 0 - _z;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, DIST, _speed, UnitsEnum_Millimeters);
 	movementCode = ZDown;
+}
+
+void Stepper::jogUR() {
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST_X = xLim - _x;
+	double DIST_Y = _y;
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	ICoord* coord = 0;
+	coord = pCncApi->mObject->GetPosition();
+	coord->X = DIST;
+	coord->Y = -DIST;
+	coord->Z = 0.0;
+	pCncApi->mObject->SendMoveDelta(coord, _speed);
+	movementCode = UpRight;
+	coord->Release();
+	coord = NULL;
+}
+
+void Stepper::jogDR() {
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST_X = xLim - _x;
+	double DIST_Y = yLim - _y;
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	ICoord* coord = 0;
+	coord = pCncApi->mObject->GetPosition();
+	coord->X = DIST;
+	coord->Y = DIST;
+	coord->Z = 0.0;
+	pCncApi->mObject->SendMoveDelta(coord, _speed);
+	movementCode = DownRight;
+	coord->Release();
+	coord = NULL;
+}
+
+void Stepper::jogDL() {
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST_X = _x;
+	double DIST_Y = yLim - _y;
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	ICoord* coord = 0;
+	coord = pCncApi->mObject->GetPosition();
+	coord->PutX(-DIST);
+	coord->PutY(DIST);
+	coord->PutZ(0.0);
+	pCncApi->mObject->SendMoveDelta(coord, _speed);
+	movementCode = DownLeft;
+	coord->Release();
+	coord = NULL;
+}
+
+void Stepper::jogUL() {
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	double DIST_X = _x;
+	double DIST_Y = _y;
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	ICoord* coord = 0;
+	coord = pCncApi->mObject->GetPosition();
+	coord->X = -DIST;
+	coord->Y = -DIST;
+	coord->Z = 0.0;
+	pCncApi->mObject->SendMoveDelta(coord, _speed);
+	movementCode = UpLeft;
+	coord->Release();
+	coord = NULL;
 }
 
 void Stepper::stop(int code) {

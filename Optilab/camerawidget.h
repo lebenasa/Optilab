@@ -26,12 +26,17 @@ signals:
 	void jogLeft();
 	void jogZUp();
 	void jogZDown();
+	void jogUR();
+	void jogDR();
+	void jogDL();
+	void jogUL();
 	void stop(int);
 
 protected:
 	void paintEvent(QPaintEvent*);
 	void keyPressEvent(QKeyEvent*);
 	void keyReleaseEvent(QKeyEvent*);
+	void focusOutEvent(QFocusEvent*);
 };
 
 #endif // CAMERAWIDGET_H

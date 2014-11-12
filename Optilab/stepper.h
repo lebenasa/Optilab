@@ -46,6 +46,10 @@ public slots:
 	void jogLeft();
 	void jogZUp();
 	void jogZDown();
+	void jogUR();
+	void jogDR();
+	void jogDL();
+	void jogUL();
 	void stop(int);
 
 	void initPosition();
