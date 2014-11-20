@@ -14,6 +14,8 @@
 #include "steppercontrol.h"
 #include "stepperdebug.h"
 
+#include "interpreter.h"
+
 QSize screenSize;
 cv::VideoWriter* recorder;
 cv::Mat currentFrame;
@@ -102,6 +104,10 @@ Optilab::Optilab(QWidget *parent)
 	//addDockWidget(Qt::RightDockWidgetArea, stepperControl);
 	stepperDebug = new StepperDebug(this);
 	stepperDebug->show();
+
+	//Interpreter (for evaluation only)
+	interpreter = new Interpreter(this);
+	interpreter->show();
 }
 
 Optilab::~Optilab()
@@ -573,5 +579,6 @@ void Optilab::setStepper(Stepper* step) {
 		connect(ui.screen, &CameraWidget::jogDL, stepper, &Stepper::jogDL);
 		connect(ui.screen, &CameraWidget::jogUL, stepper, &Stepper::jogUL);
 		connect(ui.screen, &CameraWidget::stop, stepper, &Stepper::stop);
+		interpreter->registerObject(stepper, "stepper");
 	}
 }

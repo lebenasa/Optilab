@@ -2,6 +2,7 @@
 #include "stepper.h"
 #include "api_wrapper.cpp"
 
+#include <QtConcurrent>
 #include "QSettings"
 #include <chrono>
 #include <thread>
@@ -15,7 +16,7 @@ enum Movement {
 };
 
 Stepper::Stepper(QObject *parent)
-	: QObject(parent)
+	: QObject(parent), _isInitiating(false)
 {
 	stepper = this;
 	QSettings s("Miconos", "Optilab");
@@ -61,7 +62,10 @@ bool Stepper::initStepper() {
 	hr = CoInitialize(NULL);
 
 	result = pCncApi->mObject->Initialize();
-	if (result == 0) return false;
+	if (result == 0) {
+		msg = "Failed to establish connection to Stepper.";
+		return false;
+	}
 
 	msg = "Stepper found! Connection established.";
 
@@ -84,9 +88,16 @@ void Stepper::updateStatus() {
 	_limit = pCncApi->mObject->GetLimit();
 
 	//std::bitset<8> lim = _limit;
-	//if (lim.at(2) == true) {
+	//if (lim.at(2) == true && _isInitiating) {
 	//	pCncApi->mObject->SendStop();
 	//	coord->X = 0.0;
+	//	pCncApi->mObject->SendSetPos(coord);
+	//	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, -1000, _speed, UnitsEnum_Millimeters);
+	//}
+	//if (lim.at(0) == true && _isInitiating) {
+	//	_isInitiating = false;
+	//	pCncApi->mObject->SendStop();
+	//	coord->Y = 0.0;
 	//	pCncApi->mObject->SendSetPos(coord);
 	//}
 
@@ -96,19 +107,38 @@ void Stepper::updateStatus() {
 }
 
 void Stepper::initPosition() {
-	ICoord* coord = 0;
-	coord = pCncApi->mObject->GetPosition();
-	coord->X = 0;
-	coord->Y = 0;
-	coord->Z = 0;
-	pCncApi->mObject->SendMovePos(coord, 100);
-	coord->Release();
-	coord = NULL;
+	//ICoord* coord = 0;
+	//coord = pCncApi->mObject->GetPosition();
+	//coord->X = 0;
+	//coord->Y = 0;
+	//coord->Z = 0;
+	//pCncApi->mObject->SendMovePos(coord, 100);
 	//updateStatus();
 	//while (_x > 0.1) {
 	//	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	//	updateStatus();
 	//}
+	//coord->Release();
+	//coord = NULL;
+
+	auto chkX = [this]() {
+		ICoord* coord = 0;
+		coord = pCncApi->mObject->GetPosition();
+		coord->X = 0;
+		coord->Y = 0;
+		pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, -1000, _speed, UnitsEnum_Millimeters);
+		while (std::bitset<8>(_limit).at(2) != true) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+		pCncApi->mObject->SendStop();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, -1000, _speed, UnitsEnum_Millimeters);
+		while (std::bitset<8>(_limit).at(0) != true) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+		pCncApi->mObject->SendStop();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		pCncApi->mObject->SendSetPos(coord);
+		coord->Release();
+		coord = NULL;
+	};
+	QtConcurrent::run(chkX);
 }
 
 //const double DIST = 500;
@@ -226,4 +256,43 @@ void Stepper::stop(int code) {
 			movementCode = Idle;
 		}
 	}
+}
+
+void Stepper::moveX(double dist) {
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, dist, _speed, UnitsEnum_Millimeters);
+}
+
+void Stepper::moveY(double dist) {
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, dist, _speed, UnitsEnum_Millimeters);
+}
+
+void Stepper::moveZ(double dist) {
+	if (!pCncApi->mObject || movementCode != Idle) return;
+	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, dist, _speed, UnitsEnum_Millimeters);
+}
+
+void Stepper::setXLimit(double lim) {
+	xLim = lim;
+	QSettings s("Miconos", "Optilab");
+	s.setValue("X_LIMIT", lim);
+}
+
+void Stepper::setYLimit(double lim) {
+	yLim = lim;
+	QSettings s("Miconos", "Optilab");
+	s.setValue("Y_LIMIT", lim);
+}
+
+void Stepper::setZLimit(double lim) {
+	zLim = lim;
+	QSettings s("Miconos", "Optilab");
+	s.setValue("Z_LIMIT", lim);
+}
+
+void Stepper::setSpeed(double spd) {
+	_speed = spd;
+	QSettings s("Miconos", "Optilab");
+	s.setValue("SPEED", spd);
 }

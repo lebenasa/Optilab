@@ -14,6 +14,8 @@ class Stepper : public QObject
 
 	double xLim, yLim, zLim, _speed;
 
+	bool _isInitiating;
+
 	QTimer* statusUpdater;
 public:
 	Stepper(QObject *parent=0);
@@ -51,6 +53,15 @@ public slots:
 	void jogDL();
 	void jogUL();
 	void stop(int);
+
+	void moveX(double);
+	void moveY(double);
+	void moveZ(double);
+
+	void setXLimit(double);
+	void setYLimit(double);
+	void setZLimit(double);
+	void setSpeed(double);
 
 	void initPosition();
 };
