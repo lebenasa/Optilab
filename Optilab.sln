@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraWidget", "CameraWidget\CameraWidget.vcxproj", "{EA733295-7DBB-449C-8FD9-39855EEC0450}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calibration", "Calibration\Calibration.vcxproj", "{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -26,6 +28,10 @@ Global
 		{EA733295-7DBB-449C-8FD9-39855EEC0450}.Debug|Win32.Build.0 = Debug|Win32
 		{EA733295-7DBB-449C-8FD9-39855EEC0450}.Release|Win32.ActiveCfg = Release|Win32
 		{EA733295-7DBB-449C-8FD9-39855EEC0450}.Release|Win32.Build.0 = Release|Win32
+		{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}.Debug|Win32.Build.0 = Debug|Win32
+		{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}.Release|Win32.ActiveCfg = Release|Win32
+		{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
