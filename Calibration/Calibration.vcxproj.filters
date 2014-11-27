@@ -19,10 +19,88 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{cd45330a-0ccd-4ffe-bf11-55f2f82ac345}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{047a5aba-3e53-430e-8429-8fe704363b46}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Calibration\quickcam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_quickcam.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_quickcam.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_quickcam.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Calibration\quickcam.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="quickcam.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Calibration.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Calibration\revert.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Calibration\custom.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Calibration\100x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Calibration\40x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Calibration\10x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Calibration\4x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Calibration\save.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Calibration\Calibration.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Calibration\VSpace.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Calibration\RoundButton.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Calibration\HSpace.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Calibration\LineWidget.qml">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

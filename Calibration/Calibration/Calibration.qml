@@ -2,20 +2,30 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.0
+import QuickCam 1.0
 
 ApplicationWindow {
     id: window
     title: qsTr("Calibration")
-    width: 1280
-    height: 720
+    width: camera.sourceSize.width
+    height: camera.sourceSize.height
     x: (Screen.width - width) / 2
-    y: 35
+    y: 0
+    visible: true
+
+    flags: Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowSystemMenuHint |
+           Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
 
     color: "#222"
 
-    Image {
+//    Image {
+//        anchors.fill: parent
+//        source: "tester.jpg"
+//    }
+
+    Camera {
+        id: camera
         anchors.fill: parent
-        source: "tester.jpg"
     }
 
     VSpace { id: vSpace    }
