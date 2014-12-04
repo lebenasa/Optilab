@@ -5,19 +5,38 @@ Item {
     property int length: h2.x - h1.x
     property alias unit: cbUnit.currentIndex
     property alias realLength: tLength.text
-    anchors.fill: parent
+//    anchors.fill: parent
+
+    function getRealLength() {
+        var mod = 0
+        switch(unit) {
+        case 0:
+            mod = 1
+            break
+        case 1:
+            mod = 1000
+            break
+        case 2:
+            mod = 10000
+            break
+        default:
+            mod = 1
+            break
+        }
+        return mod * realLength
+    }
 
     LineWidget {
         id: h1
         orientation: 1
-        x: 580
+        x: parent.width/2 - 60
         min: 20
         max: h2.x - 20
     }
     LineWidget {
         id: h2
         orientation: 1
-        x: 700
+        x: parent.width/2 + 60
         min: h1.x + 20
         max: parent.width - 20
     }
