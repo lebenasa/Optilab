@@ -1,0 +1,109 @@
+5161	0.0	//G28 home X
+5162	0.0	//G28 home Y
+5163	0.0	//G28 home Z
+5164	0.0	//G28 home A
+5165	0.0	//G28 home B
+5166	0.0	//G28 home C
+5167	0.0	//G28 home U
+5168	0.0	//G28 home V
+5169	0.0	//G28 home W
+5181	0.0	//G30 home X
+5182	0.0	//G30 home Y
+5183	0.0	//G30 home Z
+5184	0.0	//G30 home A
+5185	0.0	//G30 home B
+5186	0.0	//G30 home C
+5187	0.0	//G30 home U
+5188	0.0	//G30 home V
+5189	0.0	//G30 home W
+5211	0.0	//G92 offset X
+5212	0.0	//G92 offset Y
+5213	0.0	//G92 offset Z
+5214	0.0	//G92 offset A
+5215	0.0	//G92 offset B
+5216	0.0	//G92 offset C
+5217	0.0	//G92 offset U
+5218	0.0	//G92 offset V
+5219	0.0	//G92 offset W
+5220	1.0	//active coord system number
+5221	0.0	//coord system 1 X
+5222	0.0	//coord system 1 Y
+5223	0.0	//coord system 1 Z
+5224	0.0	//coord system 1 A
+5225	0.0	//coord system 1 B
+5226	0.0	//coord system 1 C
+5227	0.0	//coord system 1 U
+5228	0.0	//coord system 1 V
+5229	0.0	//coord system 1 W
+5241	0.0	//coord system 2 X
+5242	0.0	//coord system 2 Y
+5243	0.0	//coord system 2 Z
+5244	0.0	//coord system 2 A
+5245	0.0	//coord system 2 B
+5246	0.0	//coord system 2 C
+5247	0.0	//coord system 2 U
+5248	0.0	//coord system 2 V
+5249	0.0	//coord system 2 W
+5261	0.0	//coord system 3 X
+5262	0.0	//coord system 3 Y
+5263	0.0	//coord system 3 Z
+5264	0.0	//coord system 3 A
+5265	0.0	//coord system 3 B
+5266	0.0	//coord system 3 C
+5267	0.0	//coord system 3 U
+5268	0.0	//coord system 3 V
+5269	0.0	//coord system 3 W
+5281	0.0	//coord system 4 X
+5282	0.0	//coord system 4 Y
+5283	0.0	//coord system 4 Z
+5284	0.0	//coord system 4 A
+5285	0.0	//coord system 4 B
+5286	0.0	//coord system 4 C
+5287	0.0	//coord system 4 U
+5288	0.0	//coord system 4 V
+5289	0.0	//coord system 4 W
+5301	0.0	//coord system 5 X
+5302	0.0	//coord system 5 Y
+5303	0.0	//coord system 5 Z
+5304	0.0	//coord system 5 A
+5305	0.0	//coord system 5 B
+5306	0.0	//coord system 5 C
+5307	0.0	//coord system 5 U
+5308	0.0	//coord system 5 V
+5309	0.0	//coord system 5 W
+5321	0.0	//coord system 6 X
+5322	0.0	//coord system 6 Y
+5323	0.0	//coord system 6 Z
+5324	0.0	//coord system 6 A
+5325	0.0	//coord system 6 B
+5326	0.0	//coord system 6 C
+5327	0.0	//coord system 6 U
+5328	0.0	//coord system 6 V
+5329	0.0	//coord system 6 W
+5341	0.0	//coord system 7 X
+5342	0.0	//coord system 7 Y
+5343	0.0	//coord system 7 Z
+5344	0.0	//coord system 7 A
+5345	0.0	//coord system 7 B
+5346	0.0	//coord system 7 C
+5347	0.0	//coord system 7 U
+5348	0.0	//coord system 7 V
+5349	0.0	//coord system 7 W
+5361	0.0	//coord system 8 X
+5362	0.0	//coord system 8 Y
+5363	0.0	//coord system 8 Z
+5364	0.0	//coord system 8 A
+5365	0.0	//coord system 8 B
+5366	0.0	//coord system 8 C
+5367	0.0	//coord system 8 U
+5368	0.0	//coord system 8 V
+5369	0.0	//coord system 8 W
+5381	0.0	//coord system 9 X
+5382	0.0	//coord system 9 Y
+5383	0.0	//coord system 9 Z
+5384	0.0	//coord system 9 A
+5385	0.0	//coord system 9 B
+5386	0.0	//coord system 9 C
+5387	0.0	//coord system 9 U
+5388	0.0	//coord system 9 V
+5389	0.0	//coord system 9 W

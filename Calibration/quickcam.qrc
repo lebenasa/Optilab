@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="/">
+    <file>Calibration/revert.png</file>
+    <file>Calibration/Calibration.qml</file>
+    <file>Calibration/VSpace.qml</file>
+    <file>Calibration/custom.png</file>
+    <file>Calibration/100x.png</file>
+    <file>Calibration/40x.png</file>
+    <file>Calibration/10x.png</file>
+    <file>Calibration/4x.png</file>
+    <file>Calibration/RoundButton.qml</file>
+    <file>Calibration/save.png</file>
+    <file>Calibration/HSpace.qml</file>
+    <file>Calibration/LineWidget.qml</file>
+  </qresource>
+</RCC>
