@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/SerialCapture/SerialCapture.qml</file>
+    </qresource>
+</RCC>

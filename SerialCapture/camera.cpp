@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "camera.h"
 
+#include <qsgsimpletexturenode.h>
+#include <qquickwindow.h>
+
 #include "DSCAMAPI.h"
 #include "opencv2\opencv.hpp"
 
+//Useful macro for error checking
 #define STATUS_MSG(msg) #msg
 
 bool CHECKSTAT(DS_CAMERA_STATUS stat) {
@@ -14,13 +18,18 @@ bool CHECKSTAT(DS_CAMERA_STATUS stat) {
 	return true;
 }
 
+//DSCamera implementation
 DSCamera* dsc;
 
-DSCamera::DSCamera(int initResolution, QObject *parent)
-	: Camera(parent), m_resolution(initResolution)
+DSCamera::DSCamera(QObject *parent)
+	: Camera(parent), m_resolution(2)
 {
 	dsc = this;
 	initialize();
+}
+
+DSCamera::~DSCamera() {
+	deinitialize();
 }
 
 int CALLBACK SnapThreadCallback(BYTE* pBuffer) {
@@ -58,7 +67,8 @@ void DSCamera::setResolution(int res) {
 QSize& DSCamera::size() {
 	int W, H;
 	CameraGetImageSize(&W, &H);
-	return QSize{ W, H };
+	m_size = QSize(W, H);
+	return m_size;
 }
 
 void DSCamera::capture(int res, const QString &fileName) {
@@ -92,4 +102,35 @@ void DSCamera::initialize() {
 void DSCamera::deinitialize() {
 	CameraStop();
 	CameraUnInit();
+}
+
+//QuickCam implementation
+QuickCam::QuickCam(QQuickItem* parent)
+	: QQuickItem(parent), m_frame(QSize(640, 480), QImage::Format_RGB888)
+{
+	m_frame.fill(Qt::black);
+	setFlag(QQuickItem::ItemHasContents, true);
+}
+
+QuickCam::~QuickCam() {
+
+}
+
+void QuickCam::updateImage(const QImage &frame) {
+	m_frame = frame;
+	update();
+}
+
+QSGNode* QuickCam::updatePaintNode(QSGNode* node, UpdatePaintNodeData* u) {
+	Q_UNUSED(u)
+	QSGSimpleTextureNode* n = static_cast<QSGSimpleTextureNode*>(node);
+	if (!n) {
+		n = new QSGSimpleTextureNode();
+	}
+	n->setRect(boundingRect());
+
+	auto texture = n->texture();
+	if (texture) texture->deleteLater();
+	n->setTexture(this->window()->createTextureFromImage(m_frame));
+	return n;
 }

@@ -15,9 +15,7 @@ class Camera : public QObject
 	Q_OBJECT
 public:
 	Camera(QObject *parent = 0) { }
-	~Camera() {
-		deinitialize();
-	}
+	~Camera() { }
 
 public slots:
 	virtual void setResolution(int res) = 0;
@@ -25,13 +23,9 @@ public slots:
 	virtual QSize& size() = 0;
 
 	virtual void capture(int resolution, const QString &fileName) = 0;
-	virtual QImage& load(int resolution) {
-		capture(resolution, "PREP.jpg");
-		return QImage{ "PREP.jpg" };
-	}
 
 signals :
-	void frameReady(const QImage&);
+	void frameReady(const QImage& frame);
 
 protected:
 	virtual void initialize() = 0;
@@ -43,15 +37,17 @@ DSCamera - implementation of Camera using MSHOT API
 Camera control (brightness, saturation, etc) is handled elsewhere
 */
 
-class DSCamera : Camera
+class DSCamera : public Camera
 {
 	Q_OBJECT
 	int m_resolution;
 	bool m_available = false;
+	QSize m_size;
 	QImage m_buffer;
 
 public:
-	DSCamera(int initResolution, QObject *parent = 0);
+	DSCamera(QObject *parent = 0);
+	~DSCamera();
 
 	void imageProc(BYTE* pBuffer);
 
@@ -67,6 +63,34 @@ public slots:
 protected:
 	void initialize();
 	void deinitialize();
+};
+
+/*
+QuickCam - QQuickItem to render camera stream
+- Image stream is stretched, aspect ratio calculation is done elsewhere
+- Can selectively render a part of image
+- Can process image in rendering thread
+
+To use simply connect Camera::frameReady signals to QuickCam::updateImage
+*/
+
+#include <qquickitem.h>
+
+class QuickCam : public QQuickItem
+{
+	Q_OBJECT
+	QImage m_frame;
+public:
+	QuickCam(QQuickItem* parent = 0);
+	~QuickCam();
+
+public slots:
+	void updateImage(const QImage &frame);
+
+signals:
+
+protected:
+	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);
 };
 
 #endif // CAMERA_H
