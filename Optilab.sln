@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraWidget", "CameraWidge
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calibration", "Calibration\Calibration.vcxproj", "{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SerialCapture", "SerialCapture\SerialCapture.vcxproj", "{C955078B-19D8-41B3-AF5C-E7DA98CFCBCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -32,6 +34,10 @@ Global
 		{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}.Debug|Win32.Build.0 = Debug|Win32
 		{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}.Release|Win32.ActiveCfg = Release|Win32
 		{7CAF7E51-C1E5-40E8-914D-ABB4062A63E5}.Release|Win32.Build.0 = Release|Win32
+		{C955078B-19D8-41B3-AF5C-E7DA98CFCBCA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C955078B-19D8-41B3-AF5C-E7DA98CFCBCA}.Debug|Win32.Build.0 = Debug|Win32
+		{C955078B-19D8-41B3-AF5C-E7DA98CFCBCA}.Release|Win32.ActiveCfg = Release|Win32
+		{C955078B-19D8-41B3-AF5C-E7DA98CFCBCA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
