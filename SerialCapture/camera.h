@@ -20,9 +20,7 @@ public:
 	}
 
 public slots:
-	virtual void setResolution(int res) {
-		m_resolution = res;
-	}
+	virtual void setResolution(int res) = 0;
 
 	virtual QSize& size() = 0;
 
