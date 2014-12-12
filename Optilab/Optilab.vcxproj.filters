@@ -137,6 +137,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_interpreter.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="profilemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_profilemanager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_profilemanager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -197,6 +206,9 @@
     </CustomBuild>
     <CustomBuild Include="interpreter.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="profilemanager.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

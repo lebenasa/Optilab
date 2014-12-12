@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 		a->setStyleSheet(styleSheet);
 	}
 
+#ifndef DEBUG
 	QPixmap pixmap;
 	bool res = pixmap.load(":/Ribbon/img/splash-screen.png");
 	QSplashScreen* splash = new QSplashScreen(pixmap);
@@ -27,14 +28,17 @@ int main(int argc, char *argv[])
 	a->processEvents();
 	splash->showMessage("Done!", Qt::AlignBottom | Qt::AlignCenter);
 	a->processEvents();
+#endif
 
 	HBRUSH windowBackground = CreateSolidBrush(RGB(255, 255, 255));
 	NativeWindow window(a, windowBackground, 0, 0, 1024, 720);
 	window.setMinimumSize(800, 600);
+#ifndef DEBUG
 	if (stepper) {
 		Optilab* optilab = window.window()->widget();
 		optilab->setStepper(stepper);
 	}
 	splash->finish(window.window());
+#endif
 	a->exec();
 }

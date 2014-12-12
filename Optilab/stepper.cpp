@@ -85,7 +85,10 @@ void Stepper::updateStatus() {
 	_bufferSize = pCncApi->mObject->GetBufferSize();
 	_output = pCncApi->mObject->GetOutput();
 	_jog = pCncApi->mObject->GetJog();
+	QMutex mutex;
+	mutex.lock();
 	_limit = pCncApi->mObject->GetLimit();
+	mutex.unlock();
 
 	//std::bitset<8> lim = _limit;
 	//if (lim.at(2) == true && _isInitiating) {
@@ -127,11 +130,11 @@ void Stepper::initPosition() {
 		coord->X = 0;
 		coord->Y = 0;
 		pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_X, -1000, _speed, UnitsEnum_Millimeters);
-		while (std::bitset<8>(_limit).at(2) != true) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+		while (!std::bitset<8>(_limit).at(2)) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
 		pCncApi->mObject->SendStop();
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Y, -1000, _speed, UnitsEnum_Millimeters);
-		while (std::bitset<8>(_limit).at(0) != true) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
+		while (!std::bitset<8>(_limit).at(0)) { std::this_thread::sleep_for(std::chrono::milliseconds(100)); }
 		pCncApi->mObject->SendStop();
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		pCncApi->mObject->SendSetPos(coord);

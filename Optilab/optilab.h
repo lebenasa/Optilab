@@ -28,7 +28,7 @@ public:
 	Optilab(QWidget *parent = 0);
 	~Optilab();
 
-	void imgProc(BYTE* pBuffer);
+	void imgProc(cv::Mat &frame);
 	int getMaxExposureTime();
 
 	void serialCaptureInternal(int interval, int fcount, int resolution);
@@ -97,6 +97,9 @@ public slots:
 
 	void showOnScreenControl();
 
+	void viewGrid(int id, int size);	//Size in micrometer
+	void hideGrid();
+
 private:
 	Ui::OptilabClass ui;
 	QQuickView* ribbon;
@@ -132,6 +135,8 @@ private:
 	StepperDebug* stepperDebug;
 
 	Interpreter* interpreter;
+
+	bool _grid;
 
 protected:
 	void resizeEvent(QResizeEvent* event);

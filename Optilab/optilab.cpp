@@ -16,6 +16,7 @@
 
 #include "interpreter.h"
 
+Optilab* optilab;
 QSize screenSize;
 cv::VideoWriter* recorder;
 cv::Mat currentFrame;
@@ -26,9 +27,10 @@ enum RecordingStatus {
 Optilab::Optilab(QWidget *parent)
 	: QMainWindow(parent), maxGamma(150), maxContrast(255),
 	maxSaturation(255), maxAETarget(200), maxAEGain(48), maxRGBGain(200),
-	isRibbonVisible(true), ongoingCapture(false)
+	isRibbonVisible(true), ongoingCapture(false), _grid{ false }
 {
 	ui.setupUi(this);
+	optilab = this;
 	//setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint |
 	//	Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 	setWindowFlags(Qt::Widget | Qt::FramelessWindowHint);
@@ -98,16 +100,19 @@ Optilab::Optilab(QWidget *parent)
 	connect(this, SIGNAL(singleCaptureFinished()), control, SLOT(enableCapture()));
 	connect(this, &Optilab::progressUp, this, &Optilab::updateProgressBar);
 
+#ifndef DEBUG
 	//OnScreen Control
 	stepperControl = new StepperControl(this);
 	//stepperControl->show();
 	//addDockWidget(Qt::RightDockWidgetArea, stepperControl);
 	stepperDebug = new StepperDebug(this);
 	stepperDebug->show();
+#endif
 
 	//Interpreter (for evaluation only)
 	interpreter = new Interpreter(this);
 	interpreter->show();
+	interpreter->registerObject(this, "optilab");
 }
 
 Optilab::~Optilab()
@@ -126,16 +131,31 @@ int CALLBACK SnapThreadCallback(BYTE* pBuffer) {
 	int W, H;
 	CameraGetImageSize(&W, &H);
 	cv::Mat frame = cv::Mat(H, W, CV_8UC3, pBmp24);
-	if (pBmp24)
-		CameraDisplayRGB24(frame.data);
-
-	//if (recordingStatus == Recording && recorder) {
 	QMutex mutex;
 	mutex.lock();
 	cv::flip(frame, currentFrame, 0);
 	mutex.unlock();
-	//}
+	if (pBmp24 && optilab) {
+		optilab->imgProc(frame);
+	}
 	return TRUE;
+}
+
+QSize GRID_SIZE;	//Grid size in pixel
+void Optilab::imgProc(cv::Mat &frame) {
+	if (_grid) {
+		int W, H;
+		CameraGetImageSize(&W, &H);
+		int nw = 1.0 * W / GRID_SIZE.width();
+		int nh = 1.0 * H / GRID_SIZE.height();
+		for (int i = 0; i <= nw; ++i) {
+			cv::line(frame, cv::Point{ i*GRID_SIZE.width(), 0 }, cv::Point{ i*GRID_SIZE.width(), H }, cv::Scalar{ 0, 255, 0 }, 2);
+		}
+		for (int j = 0; j <= nh; ++j) {
+			cv::line(frame, cv::Point{ 0, j*GRID_SIZE.height() }, cv::Point{ W, j*GRID_SIZE.height() }, cv::Scalar{ 0, 255, 0 }, 2);
+		}
+	}
+	CameraDisplayRGB24(frame.data);
 }
 
 void Optilab::resizeEvent(QResizeEvent* event) {
@@ -183,7 +203,7 @@ void Optilab::setStreamResolution(int res) {
 		status = CameraPlay();
 		CameraSetB2RGBMode(DS_B2RGB_MODE::B2RGB_MODE_LINE);
 		CameraSetColorEnhancement(TRUE);
-		//CameraSetLightFrquency(DS_LIGHT_FREQUENCY::LIGHT_FREQUENCY_60HZ);
+		CameraSetLightFrquency(DS_LIGHT_FREQUENCY::LIGHT_FREQUENCY_60HZ);
 		CameraSetFrameSpeed(DS_FRAME_SPEED::FRAME_SPEED_NORMAL);
 		emit cameraInitialized();
 		if (res == 0)
@@ -581,4 +601,20 @@ void Optilab::setStepper(Stepper* step) {
 		connect(ui.screen, &CameraWidget::stop, stepper, &Stepper::stop);
 		interpreter->registerObject(stepper, "stepper");
 	}
+}
+
+#include "profilemanager.h"
+void Optilab::viewGrid(int id, int size) {
+	ProfileManager manager{ this };
+	auto calibrated = manager.loadProfile(id).toSize();
+	int W, H;
+	CameraGetImageSize(&W, &H);
+	int ww = 1.0 * size / calibrated.width() * W;
+	int hh = 1.0 * size / calibrated.height() * H;
+	GRID_SIZE = QSize{ ww, hh };
+	_grid = true;
+}
+
+void Optilab::hideGrid() {
+	_grid = false;
 }
