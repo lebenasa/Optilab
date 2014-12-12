@@ -46,6 +46,18 @@
     <ClCompile Include="GeneratedFiles\qrc_serialcapture.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="stepper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_stepper.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_stepper.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="api_wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="camera.h">
@@ -54,9 +66,15 @@
     <CustomBuild Include="serialcapture.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="stepper.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api_wrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
