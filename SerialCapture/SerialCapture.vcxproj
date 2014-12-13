@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="api_wrapper.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <CustomBuild Include="stepper.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -132,12 +133,18 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="SerialCapture.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Optilab.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <CustomBuild Include="serialcapture.qrc">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);.\Calibration\revert.png;.\Calibration\Calibration.qml;.\Calibration\VSpace.qml;.\Calibration\custom.png;.\Calibration\100x.png;.\Calibration\40x.png;.\Calibration\10x.png;.\Calibration\4x.png;.\Calibration\RoundButton.qml;.\Calibration\save.png;.\Calibration\HSpace.qml;.\Calibration\LineWidget.qml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);C:\Users\Leben Asa\Documents\Visual Studio 2013\Projects\Optilab\SerialCapture\Resources\SerialCapture\SerialCapture.qml;%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Rcc%27ing %(Identity)...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\qrc_%(Filename).cpp;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\rcc.exe" -name "%(Filename)" -no-compress "%(FullPath)" -o .\GeneratedFiles\qrc_%(Filename).cpp</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(FullPath);.\Calibration\revert.png;.\Calibration\Calibration.qml;.\Calibration\VSpace.qml;.\Calibration\custom.png;.\Calibration\100x.png;.\Calibration\40x.png;.\Calibration\10x.png;.\Calibration\4x.png;.\Calibration\RoundButton.qml;.\Calibration\save.png;.\Calibration\HSpace.qml;.\Calibration\LineWidget.qml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Rcc%27ing %(Identity)...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\qrc_%(Filename).cpp;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\rcc.exe" -name "%(Filename)" -no-compress "%(FullPath)" -o .\GeneratedFiles\qrc_%(Filename).cpp</Command>

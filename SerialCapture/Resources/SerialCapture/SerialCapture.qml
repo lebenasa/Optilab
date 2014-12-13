@@ -5,60 +5,62 @@ import QuickCam 1.0
 import Stepper 1.0
 
 ApplicationWindow {
-    title: qsTr("Serial Capture")
+    title: qsTr("Serial Capture Prototype")
     width: 640
     height: 480
     visible: true
 
     Camera {
         id: src
-        onFrameReady: renderer.updateImage(frame)
     }
-    Stepper {
-        id: stepper
-    }
+//    Stepper {
+//        id: stepper
+//    }
 
-    CameraItem {
-        id: renderer
+    Rectangle {
         anchors.fill: parent
-
-//        focus: true
-//        property int currentKey
-//        Keys.onPressed: {
-//            if (event.isAutoRepeat) return
-//            switch (event.key) {
-//            case Qt.Key_Up:
-//                stepper.jogUp()
-//                currentKey = Qt.Key_Up
-//                break
-//            case Qt.Key_Right:
-//                stepper.jogRight()
-//                currentKey = Qt.Key_Right
-//                break
-//            case Qt.Key_Down:
-//                stepper.jogDown()
-//                currentKey = Qt.Key_Down
-//                break
-//            case Qt.Key_Left:
-//                stepper.jogLeft()
-//                currentKey = Qt.Key_Left
-//                break
-//            case Qt.Key_Plus:
-//                stepper.jogZUp()
-//                currentKey = Qt.Key_Plus
-//                break
-//            case Qt.Key_Minus:
-//                stepper.jogZDown()
-//                currentKey = Qt.Key_Minus
-//                break
-//            }
-//        }
-//        Keys.onReleased: {
-//            if (event.isAutoRepeat) return
-//            if (event.key === currentKey) {
-//                stepper.stop(0)
-//                event.accepted = true
-//            }
-//        }
+        color: "#333"
+        Flickable {
+            id: gridArea
+            anchors {
+                right: tempCtrlPanel.left; top: parent.top
+                left: parent.left; bottom: parent.bottom
+            }
+            contentWidth: cameraGrid.width
+            contentHeight: cameraGrid.height
+            clip: true
+            Grid {
+                id: cameraGrid
+                width: src.sourceSize.width; height: src.sourceSize.height
+                spacing: 0
+                columns: 10
+                rows: 10
+                anchors.fill: parent
+                Repeater {
+                    id: cameraArray
+                    model: 100
+                    CameraItem {
+                        id: cameraDelegate
+                        width: src.sourceSize.width / 10
+                        height: src.sourceSize.height / 10
+                        blocked: false
+                        renderParams: CameraItem.ScaledToItem
+                        Connections {
+                            target: src
+                            onFrameReady: cameraDelegate.updateImage(frame)
+                        }
+                    }
+                }
+            }
+        }
+        Rectangle {
+            id: tempCtrlPanel
+            width: 150
+            color: "#333"
+            anchors {
+                right: parent.right; top: parent.top;
+                bottom: parent.bottom
+            }
+        }
     }
 }

@@ -13,6 +13,7 @@ Base implementation of Camera
 class Camera : public QObject
 {
 	Q_OBJECT
+	Q_PROPERTY(QSize sourceSize READ size NOTIFY sourceSizeChanged)
 public:
 	Camera(QObject *parent = 0) : QObject(parent) { }
 	~Camera() { }
@@ -26,6 +27,7 @@ public slots:
 
 signals :
 	void frameReady(const QImage& frame);
+	void sourceSizeChanged(const QSize& sz);
 
 protected:
 	virtual void initialize() = 0;
@@ -79,15 +81,27 @@ To use simply connect Camera::frameReady signals to QuickCam::updateImage
 class QuickCam : public QQuickItem
 {
 	Q_OBJECT
+	Q_PROPERTY(bool blocked READ isBlocked WRITE block NOTIFY blockedChanged)
+	Q_PROPERTY(RenderParams renderParams MEMBER renderParams)
+	Q_ENUMS(RenderParams)
 	QImage m_frame;
+	bool m_blocked;
 public:
 	QuickCam(QQuickItem* parent = 0);
 	~QuickCam();
+
+	enum RenderParams {
+		OriginalSize, ScaledToItem, Halved
+	} renderParams;
+
+	bool isBlocked();
+	void block(bool bl);
 
 public slots:
 	void updateImage(const QImage &frame);
 
 signals:
+	void blockedChanged(bool block);
 
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);

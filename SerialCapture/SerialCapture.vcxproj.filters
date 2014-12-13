@@ -43,9 +43,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_camera.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_serialcapture.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="stepper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -58,16 +55,19 @@
     <ClCompile Include="api_wrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_serialcapture.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="camera.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="serialcapture.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="stepper.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="serialcapture.qrc">
+      <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -77,5 +77,14 @@
     <ClInclude Include="api_wrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SerialCapture.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Optilab.ico" />
   </ItemGroup>
 </Project>

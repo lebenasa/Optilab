@@ -58,6 +58,7 @@ void DSCamera::setResolution(int res) {
 		CameraSetLightFrquency(DS_LIGHT_FREQUENCY::LIGHT_FREQUENCY_60HZ);
 		CameraSetFrameSpeed(DS_FRAME_SPEED::FRAME_SPEED_NORMAL);
 		m_available = CHECKSTAT(CameraPlay());
+		emit sourceSizeChanged(size());
 	}
 	else {
 		m_available = false;
@@ -106,9 +107,10 @@ void DSCamera::deinitialize() {
 
 //QuickCam implementation
 QuickCam::QuickCam(QQuickItem* parent)
-	: QQuickItem(parent), m_frame(QSize(640, 480), QImage::Format_RGB888)
+	: QQuickItem(parent), m_frame(QSize(640, 480), QImage::Format_RGB888), m_blocked(false)
 {
 	m_frame.fill(Qt::black);
+	renderParams = OriginalSize;
 	setFlag(QQuickItem::ItemHasContents, true);
 }
 
@@ -116,8 +118,26 @@ QuickCam::~QuickCam() {
 
 }
 
+bool QuickCam::isBlocked() {
+	return m_blocked;
+}
+
+void QuickCam::block(bool bl) {
+	if (m_blocked != bl) {
+		m_blocked = bl;
+		emit blockedChanged(bl);
+	}
+}
+
 void QuickCam::updateImage(const QImage &frame) {
-	m_frame = frame;
+	if (!m_blocked) {
+		auto src = frame;
+		if (renderParams == ScaledToItem)
+			src = src.scaled(QSize(width(), height()));
+		else if (renderParams == Halved)
+			src = src.scaled(QSize(src.width() / 2, src.height() / 2));
+		m_frame = src;
+	}
 	update();
 }
 
