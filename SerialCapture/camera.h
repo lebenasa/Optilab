@@ -14,7 +14,7 @@ class Camera : public QObject
 {
 	Q_OBJECT
 public:
-	Camera(QObject *parent = 0) { }
+	Camera(QObject *parent = 0) : QObject(parent) { }
 	~Camera() { }
 
 public slots:

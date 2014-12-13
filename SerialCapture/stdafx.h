@@ -3,6 +3,11 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <bitset>
+#include <queue>
+#include <vector>
+#include <algorithm>
+#include <functional>
 
 #define NOMINMAX
 #include <Windows.h>
