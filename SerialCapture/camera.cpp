@@ -107,7 +107,7 @@ void DSCamera::deinitialize() {
 
 //QuickCam implementation
 QuickCam::QuickCam(QQuickItem* parent)
-	: QQuickItem(parent), m_frame(QSize(640, 480), QImage::Format_RGB888), m_blocked(false)
+	: QQuickItem(parent), m_frame(QSize(10, 10), QImage::Format_RGB888), m_blocked(false)
 {
 	m_frame.fill(Qt::black);
 	renderParams = OriginalSize;
