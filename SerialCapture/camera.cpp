@@ -129,6 +129,10 @@ void QuickCam::block(bool bl) {
 	}
 }
 
+QImage QuickCam::currentFrame() const {
+	return m_frame;
+}
+
 void QuickCam::updateImage(const QImage &frame) {
 	if (!m_blocked) {
 		auto src = frame;
@@ -139,6 +143,7 @@ void QuickCam::updateImage(const QImage &frame) {
 		m_frame = src;
 	}
 	update();
+	emit sourceChanged(m_frame);
 }
 
 QSGNode* QuickCam::updatePaintNode(QSGNode* node, UpdatePaintNodeData* u) {

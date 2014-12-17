@@ -81,6 +81,7 @@ To use simply connect Camera::frameReady signals to QuickCam::updateImage
 class QuickCam : public QQuickItem
 {
 	Q_OBJECT
+	Q_PROPERTY(QImage source READ currentFrame WRITE updateImage NOTIFY sourceChanged)
 	Q_PROPERTY(bool blocked READ isBlocked WRITE block NOTIFY blockedChanged)
 	Q_PROPERTY(RenderParams renderParams MEMBER renderParams)
 	Q_ENUMS(RenderParams)
@@ -97,11 +98,14 @@ public:
 	bool isBlocked();
 	void block(bool bl);
 
+	QImage currentFrame() const;
+
 public slots:
 	void updateImage(const QImage &frame);
 
 signals:
 	void blockedChanged(bool block);
+	void sourceChanged(const QImage &nframe);
 
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*);
