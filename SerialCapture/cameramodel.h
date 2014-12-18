@@ -30,9 +30,9 @@ public:
 	QSize cellSize() const;
 	void setCellSize(const QSize &size);
 
-	// Convert 1D index to 2D index e.g. 12 -> 1x1
+	// Convert 1D index to 2D index e.g. 11 -> 1x1
 	QPoint indexToPoint(int index) const;
-	// Convert 2D index to 1D index e.g. 1x1 -> 12
+	// Convert 2D index to 1D index e.g. 1x1 -> 11
 	int pointToIndex(const QPoint& point) const;
 
 	// Get empty cell index based on filled cell position
@@ -44,11 +44,17 @@ public slots:
 	// Client calculate correct row and column, size is cell size in pixel
 	// NOTE: it will reset all data in model
 	void initModel(int row, int col, const QSize &size);
+
 	// Set all images in buffer to 1x1 black image
 	void clearBuffers();
 	void clearBuffersAt(const QPoint &index);
 	// Client choose where to update buffer according to stepper position
 	void updateBuffer(const QImage &buffer, const QPoint &index);
+
+	// Clear selection
+	void clearSelection();
+	// Select a cell
+	void select(const QPoint &index);
 
 protected:
 	QHash<int, QByteArray> roleNames() const;

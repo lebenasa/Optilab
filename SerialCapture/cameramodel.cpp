@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cameramodel.h"
+using namespace std;
 
 CameraModel::CameraModel(int row, int col, const QSize& size, QObject *parent)
 	: QAbstractListModel(parent), m_row(0), m_col(0)
@@ -54,7 +55,6 @@ void CameraModel::setCellSize(const QSize& size) {
 }
 
 void CameraModel::initModel(int row, int col, const QSize& size) {
-	using namespace std;
 	auto index = this->createIndex(0, 0);
 	beginRemoveRows(index, 0, rowCount());
 	m_buffer.erase(begin(m_buffer), end(m_buffer));
@@ -103,6 +103,20 @@ void CameraModel::updateBuffer(const QImage& buffer, const QPoint& target) {
 	}
 }
 
+void CameraModel::clearSelection() {
+	fill(begin(m_selected), end(m_selected), false);
+	auto tl = createIndex(0, 0);
+	auto br = createIndex(rowCount() - 1, 0);
+	emit dataChanged(tl, br, { SelectedRole });
+}
+
+void CameraModel::select(const QPoint& target) {
+	auto index = pointToIndex(target);
+	m_selected[index] = true;
+	auto mi = createIndex(index, 0);
+	emit dataChanged(mi, mi, { SelectedRole });
+}
+
 QPoint CameraModel::indexToPoint(int index) const {
 	int col = index % m_row;
 	int row = (index - col) / m_col;
@@ -114,8 +128,6 @@ int CameraModel::pointToIndex(const QPoint& point) const {
 }
 
 std::vector<QPoint> CameraModel::autoFill() const {
-	using namespace std;
-
 	// Find top-left and bottom-right filled cell
 	auto first_i = find(begin(m_hasImage), end(m_hasImage), true);
 	int first = distance(begin(m_hasImage), first_i);
