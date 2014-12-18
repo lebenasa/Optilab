@@ -3,7 +3,7 @@
 using namespace std;
 
 CameraModel::CameraModel(int row, int col, const QSize& size, QObject *parent)
-	: QAbstractListModel(parent), m_row(0), m_col(0)
+	: QAbstractListModel(parent), m_row(0), m_col(0), m_size()
 {
 	initModel(row, col, size);
 }
@@ -101,6 +101,10 @@ void CameraModel::updateBuffer(const QImage& buffer, const QPoint& target) {
 		auto modelIndex = createIndex(index, 0);
 		emit dataChanged(modelIndex, modelIndex, { BufferRole });
 	}
+}
+
+void CameraModel::saveBuffers(const QString& baseDir) {
+	// We'll implement this later
 }
 
 void CameraModel::clearSelection() {

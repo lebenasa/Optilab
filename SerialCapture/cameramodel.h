@@ -50,6 +50,8 @@ public slots:
 	void clearBuffersAt(const QPoint &index);
 	// Client choose where to update buffer according to stepper position
 	void updateBuffer(const QImage &buffer, const QPoint &index);
+	// Save all buffers to file
+	void saveBuffers(const QString& dir);
 
 	// Clear selection
 	void clearSelection();
