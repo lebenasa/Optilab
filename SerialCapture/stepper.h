@@ -115,7 +115,6 @@ private:
 
 /*
 CNCStepper - Stepper implementation using CNC API
-- Added several non-critical property
 */
 class CNCStepper : public Stepper
 {
@@ -165,6 +164,56 @@ public slots:
 protected:
 	bool init();
 	void deinit();
+};
+
+/*
+MockStepper - Stepper implementation using dummy stepper
+*/
+class MockStepper : public Stepper
+{
+	Q_OBJECT
+	double m_z, m_ztarget;
+	int m_bufferFree, m_bufferSize;
+	std::bitset<8> m_limit;
+	int movementCode;
+	QPointF m_target, m_pos;
+	QTimer* eventDriver;
+public:
+	MockStepper(QObject* parent = 0);
+	~MockStepper();
+
+	double x() { return m_pos.x(); }
+	double y() { return m_pos.y(); }
+	double z() { return m_z; }
+	int bufferFree() { return m_bufferFree; }
+	int bufferSize() { return m_bufferSize; }
+
+	bool limitAt(int id) override { return m_limit.at(id); }
+
+public slots:
+	void jogUp();
+	void jogRight();
+	void jogDown();
+	void jogLeft();
+	void jogZUp();
+	void jogZDown();
+	void jogUR();
+	void jogDR();
+	void jogDL();
+	void jogUL();
+	void stop(int);
+
+	void moveX(double);
+	void moveY(double);
+	void moveZ(double);
+
+	void moveTo(const QPointF& npos);
+
+	void updateStatus();
+
+private:
+	void setTarget(const QPointF&);
+	void setTarget(double x, double y);
 };
 
 #endif // STEPPER_H

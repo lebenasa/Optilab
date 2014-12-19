@@ -364,3 +364,167 @@ void CNCStepper::moveTo(const QPointF& npos) {
 	coord->Release();
 	coord = nullptr;
 }
+
+// MockStepper
+MockStepper::MockStepper(QObject* parent)
+	: Stepper(parent), m_z(0), movementCode(Idle), m_bufferSize(14),
+	m_bufferFree(14), m_ztarget(0)
+{
+	m_limit = std::bitset<8>(false);
+	eventDriver = new QTimer(this);
+	eventDriver->setInterval(1);
+	connect(eventDriver, &QTimer::timeout, this, &MockStepper::updateStatus);
+	eventDriver->start();
+}
+
+MockStepper::~MockStepper() {}
+
+void MockStepper::updateStatus() {
+	auto incr = [](const double &now, const double &target) -> double {
+		double res = now;
+		if (target > now)
+			return res + .01;
+		return res - .01;
+	};
+	if (m_target != m_pos) {
+		if (m_target.x() != m_pos.x()) {
+			auto npos = incr(m_pos.x(), m_target.x());
+			m_pos.setX(npos);
+			emit xChanged(npos);
+		}
+		if (m_target.y() != m_pos.y()) {
+			auto npos = incr(m_pos.y(), m_target.y());
+			m_pos.setY(npos);
+			emit yChanged(npos);
+		}
+		emit xyChanged(m_pos);
+
+		if (m_pos == m_target) {
+			++m_bufferFree;
+			emit bufferFreeChanged(m_bufferFree);
+			emit bufferFull();
+			setWorking(false);
+		}
+	}
+	if (m_ztarget != m_z) {
+		auto npos = incr(m_z, m_ztarget);
+		m_z = npos;
+		emit zChanged(npos);
+	}
+}
+
+void MockStepper::setTarget(const QPointF& ntarget) {
+	eventDriver->stop();
+	m_target = ntarget;
+	if (m_target != m_pos) {
+		--m_bufferFree;
+		emit bufferFreeChanged(m_bufferFree);
+		setWorking(true);
+	}
+	eventDriver->start();
+}
+
+void MockStepper::setTarget(double x, double y) {
+	double xx, yy;
+	xx = (x < 0) ? m_pos.x() : x;
+	yy = (y < 0) ? m_pos.y() : y;
+	setTarget(QPointF(xx, yy));
+}
+
+void MockStepper::jogUp() {
+	if (movementCode != Idle) return;
+	setTarget(-1, 0.0);
+	movementCode = Up;
+}
+
+void MockStepper::jogRight() {
+	if (movementCode != Idle) return;
+	setTarget(m_xLim, -1);
+	movementCode = Right;
+}
+
+void MockStepper::jogDown() {
+	if (movementCode != Idle) return;
+	setTarget(-1, m_yLim);
+	movementCode = Down;
+}
+
+void MockStepper::jogLeft() {
+	if (movementCode != Idle) return;
+	setTarget(0.0, -1.0);
+	movementCode = Left;
+}
+
+void MockStepper::jogZUp() {
+	if (movementCode != Idle) return;
+	m_ztarget = m_zLim;
+	movementCode = ZUp;
+}
+
+void MockStepper::jogZDown() {
+	if (movementCode != Idle) return;
+	m_ztarget = 0;
+	movementCode = ZDown;
+}
+
+void MockStepper::jogUR() {
+	if (movementCode != Idle) return;
+	double DIST_X = m_xLim - m_pos.x();
+	double DIST_Y = m_pos.y();
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	setTarget(m_pos.x() + DIST, m_pos.y() - DIST);
+	movementCode = UpRight;
+}
+
+void MockStepper::jogDR() {
+	if (movementCode != Idle) return;
+	double DIST_X = m_xLim - m_pos.x();
+	double DIST_Y = m_yLim - m_pos.y();
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	setTarget(m_pos.x() + DIST, m_pos.y() + DIST);
+	movementCode = DownRight;
+}
+
+void MockStepper::jogDL() {
+	if (movementCode != Idle) return;
+	double DIST_X = m_pos.x();
+	double DIST_Y = m_yLim - m_pos.y();
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	setTarget(m_pos.x() - DIST, m_pos.y() + DIST);
+	movementCode = DownLeft;
+}
+
+void MockStepper::jogUL() {
+	if (movementCode != Idle) return;
+	double DIST_X = m_pos.x();
+	double DIST_Y = m_pos.y();
+	auto DIST = (DIST_X < DIST_Y) ? DIST_X : DIST_Y;
+	setTarget(m_pos.x() - DIST, m_pos.y() - DIST);
+	movementCode = UpLeft;
+}
+
+void MockStepper::stop(int code) {
+	if (code == movementCode || code == 0) {
+		setTarget(m_pos);
+		movementCode = Idle;
+	}
+}
+
+void MockStepper::moveX(double dist) {
+	if (movementCode != Idle) return;
+	setTarget(m_pos.x() + dist, -1);
+}
+
+void MockStepper::moveY(double dist) {
+	if (movementCode != Idle) return;
+	setTarget(-1, m_pos.y() + dist);
+}
+
+void MockStepper::moveZ(double dist) {
+	if (movementCode != Idle) return;
+	m_ztarget = m_z + dist;
+}
+
+void MockStepper::moveTo(const QPointF& npos) {
+	setTarget(npos);
+}
