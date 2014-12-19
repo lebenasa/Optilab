@@ -85,6 +85,7 @@ signals:
 	void xChanged(double x);
 	void yChanged(double y);
 	void zChanged(double z);
+	void xyChanged(const QPointF& xy);
 
 	void bufferFreeChanged(int buffer);
 	void bufferFull();

@@ -163,6 +163,7 @@ void CNCStepper::updateStatus() {
 		m_y = _y;
 		emit yChanged(m_y);
 	}
+	emit xyChanged(QPointF(m_x, m_y));
 	if (m_z != _z) {
 		m_z = _z;
 		emit zChanged(m_z);
