@@ -399,7 +399,9 @@ void MockStepper::updateStatus() {
 		}
 		emit xyChanged(m_pos);
 
-		if (m_pos == m_target) {
+		if (fabs(m_pos.x() - m_target.x()) <= .00001 &&
+			fabs(m_pos.y() - m_target.y()) <= .00001) {
+			stop(0);
 			++m_bufferFree;
 			emit bufferFreeChanged(m_bufferFree);
 			emit bufferFull();
