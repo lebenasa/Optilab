@@ -7,7 +7,8 @@
 class SMInterface : public QObject
 {
 	Q_OBJECT
-	QSize m_size;			// Current calibrated size
+	Q_PROPERTY(QPoint cellPos MEMBER m_index NOTIFY cellPosChanged)
+	QSizeF m_size;			// Current calibrated size
 	double m_overlap;		// Overlap between cells, default to 25%
 	int m_rows, m_cols;		// Rows and cols based on limit and frame size
 	QPoint m_index;			// Current position in 2D index

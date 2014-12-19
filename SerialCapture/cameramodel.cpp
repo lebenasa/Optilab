@@ -28,6 +28,19 @@ QVariant CameraModel::data(const QModelIndex& index, int role) const {
 	return QVariant();
 }
 
+bool CameraModel::setData(const QModelIndex & index, const QVariant & value, int role) {
+	if (role == SelectedRole) {
+		m_selected[index.row()] = value.toBool();
+		emit dataChanged(index, index, { SelectedRole });
+		return true;
+	}
+	return false;
+}
+
+Qt::ItemFlags CameraModel::flags(const QModelIndex& index) const {
+	return Qt::ItemIsEditable;
+}
+
 QHash<int, QByteArray> CameraModel::roleNames() const {
 	QHash<int, QByteArray> roles;
 	roles[BufferRole] = "buffer";

@@ -15,10 +15,11 @@ SMInterface::~SMInterface()
 
 class GenPointF
 {
-	int m_col, w, x;
-	int h, y;
+	int m_col, x;
+	int y;
+	double w, h;
 public:
-	GenPointF(int col, const QSize &sz) :
+	GenPointF(int col, const QSizeF &sz) :
 		m_col(col), x(0), y(0), w(sz.width()), h(sz.height()) { }
 	QPointF operator()() {
 		QPointF res{ 1.0*x*w, 1.0*y*h };
@@ -36,12 +37,12 @@ void SMInterface::loadProfile(int profile) {
 	// Initialize necessary data
 	QSettings s{ "Miconos", "Optilab", this };
 	QString name = QString{ "PROFILE_%1" }.arg(profile);
-	auto sz = s.value(name, QSizeF(1000.0, 1000.0)).toSizeF();
-	m_size = QSize((1.0 - m_overlap) * sz.width(), (1.0 - m_overlap) * sz.height());
+	auto sz = s.value(name, QSizeF(10000.0, 10000.0)).toSizeF();
+	m_size = QSizeF((1.0 - m_overlap) * sz.width() / 1000.0, (1.0 - m_overlap) * sz.height() / 1000.0);
 	double xlim = s.value("X_LIMIT", 100).toDouble();
 	double ylim = s.value("Y_LIMIT", 100).toDouble();
-	m_cols = xlim * 1000.0 / m_size.width();	// Limit is stored in mm,
-	m_rows = ylim * 1000.0 / m_size.height();	// Calibration is stored in um
+	m_cols = xlim / m_size.width();	// Limit is stored in mm,
+	m_rows = ylim / m_size.height();	// Calibration is stored in um
 	
 	// Generate coordinate table
 	m_grid.erase(begin(m_grid), end(m_grid));
@@ -61,6 +62,7 @@ void SMInterface::alignToGrid() {
 QPoint SMInterface::coordToIndex(const QPointF& pos) const {
 	auto p = begin(m_grid);
 	auto between = [&](const QPointF& val) -> bool {
+		if (p == end(m_grid) - 1 || p == end(m_grid)) return false;
 		++p;
 		auto nextVal = *p;
 		if (val.x() <= pos.x() && pos.x() < nextVal.x() &&
