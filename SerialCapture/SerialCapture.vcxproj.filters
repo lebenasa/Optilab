@@ -90,9 +90,6 @@
     <CustomBuild Include="camera.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="stepper.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="serialcapture.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
@@ -103,6 +100,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="sminterface.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="stepper.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
