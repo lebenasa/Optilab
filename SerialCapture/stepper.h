@@ -69,6 +69,8 @@ public slots:
 	virtual void moveY(double) = 0;
 	virtual void moveZ(double) = 0;
 
+	virtual void moveTo(const QPointF&) = 0;
+
 	void setXLimit(double);
 	void setYLimit(double);
 	void setZLimit(double);
@@ -145,6 +147,8 @@ public slots:
 	void moveX(double);
 	void moveY(double);
 	void moveZ(double);
+
+	void moveTo(const QPointF& npos);
 
 	void updateStatus();
 

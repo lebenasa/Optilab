@@ -8,6 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <memory>
 
 #define NOMINMAX
 #include <Windows.h>

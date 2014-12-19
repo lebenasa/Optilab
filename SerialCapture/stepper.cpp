@@ -341,3 +341,14 @@ void CNCStepper::moveZ(double dist) {
 	if (!pCncApi->mObject || movementCode != Idle) return;
 	pCncApi->mObject->SendMoveDeltaAxis(AxisEnum_Z, dist, m_speed, UnitsEnum_Millimeters);
 }
+
+void CNCStepper::moveTo(const QPointF& npos) {
+	if (!pCncApi->mObject) return;
+	ICoord* coord = 0;
+	coord = pCncApi->mObject->GetPosition();
+	coord->X = npos.x();
+	coord->Y = npos.y();
+	pCncApi->mObject->SendMovePos(coord, m_speed);
+	coord->Release();
+	coord = nullptr;
+}
