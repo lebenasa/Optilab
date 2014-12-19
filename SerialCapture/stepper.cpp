@@ -5,7 +5,7 @@
 
 //Stepper
 Stepper::Stepper(QObject *parent)
-	: QObject(parent)
+	: QObject(parent), m_working(false)
 {
 	QSettings s("Miconos", "Optilab");
 	m_xLim = s.value("X_LIMIT", 100).toDouble();
@@ -17,6 +17,13 @@ Stepper::Stepper(QObject *parent)
 Stepper::~Stepper()
 {
 
+}
+
+void Stepper::setWorking(bool w) {
+	if (m_working != w) {
+		m_working = w;
+		emit isWorkingChanged(m_working);
+	}
 }
 
 void Stepper::setXLimit(double lim) {
@@ -175,8 +182,12 @@ void CNCStepper::updateStatus() {
 	if (m_bufferFree != _bufferFree) {
 		m_bufferFree = _bufferFree;
 		emit bufferFreeChanged(m_bufferFree);
-		if (m_bufferFree == m_bufferSize)
+		if (m_bufferFree == m_bufferSize) {
 			emit bufferFull();
+			setWorking(false);
+		}
+		else
+			setWorking(true);
 	}
 	
 	m_bufferSize = pCncApi->mObject->GetBufferSize();

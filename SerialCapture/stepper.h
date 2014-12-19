@@ -52,6 +52,10 @@ public:
 
 	void addCommand(Command);
 
+	virtual bool isWorking() const {
+		return m_working;
+	}
+
 public slots:
 	virtual void jogUp() = 0;
 	virtual void jogRight() = 0;
@@ -89,6 +93,7 @@ signals:
 
 	void bufferFreeChanged(int buffer);
 	void bufferFull();
+	void isWorkingChanged(bool);
 	
 	void limit0Changed(bool limit);
 	void limit1Changed(bool limit);
@@ -102,6 +107,10 @@ signals:
 protected:
 	double m_xLim, m_yLim, m_zLim, m_speed;
 	CommandPool commandPool;
+	void setWorking(bool w);
+
+private:
+	bool m_working;
 };
 
 /*
