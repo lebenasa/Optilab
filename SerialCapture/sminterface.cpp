@@ -60,22 +60,18 @@ void SMInterface::alignToGrid() {
 }
 
 QPoint SMInterface::coordToIndex(const QPointF& pos) const {
-	auto p = begin(m_grid);
-	auto between = [&](const QPointF& val) -> bool {
-		if (p == end(m_grid) - 1 || p == end(m_grid)) return false;
-		++p;
-		auto nextVal = *p;
-		if (val.x() <= pos.x() && pos.x() < nextVal.x() &&
-			val.y() <= pos.y() && pos.y() < nextVal.y())
-			return true;
-		return false;
-	};
-	auto found = find_if(begin(m_grid), end(m_grid), between);
-	if (found == end(m_grid)) --found;
-	int index = distance(begin(m_grid), found);
-	int col = index % m_rows;
-	int row = (index - col) / m_cols;
-	return QPoint(col, row);
+	size_t ix, iy;
+	for (ix = 0; ix < m_cols; ++ix) {
+		auto cellx = m_grid.at(ix).x();
+		if (pos.x() <= cellx)
+			break;
+	}
+	for (iy = 0; iy < m_rows; ++iy) {
+		auto celly = m_grid.at(iy).y();
+		if (pos.y() <= celly)
+			break;
+	}
+	return QPoint(ix, iy);
 }
 
 QPointF SMInterface::indexToCoord(const QPoint& pos) const {
