@@ -2,10 +2,10 @@
 #include "cameramodel.h"
 using namespace std;
 
-CameraModel::CameraModel(int row, int col, const QSize& size, QObject *parent)
-	: QAbstractListModel(parent), m_row(0), m_col(0), m_size()
+CameraModel::CameraModel(int row, int col, QObject *parent)
+	: QAbstractListModel(parent), m_row(0), m_col(0)
 {
-	initModel(row, col, size);
+	initModel(row, col);
 }
 
 CameraModel::~CameraModel()
@@ -43,27 +43,14 @@ int CameraModel::cols() const {
 	return m_col;
 }
 
-QSize CameraModel::cellSize() const {
-	return m_size;
-}
-
-void CameraModel::setCellSize(const QSize& size) {
-	if (m_size != size) {
-		m_size = size;
-		emit cellSizeChanged(m_size);
-	}
-}
-
-void CameraModel::initModel(int row, int col, const QSize& size) {
+void CameraModel::initModel(int row, int col) {
 	auto index = this->createIndex(0, 0);
 	beginRemoveRows(index, 0, rowCount());
 	m_buffer.erase(begin(m_buffer), end(m_buffer));
 	m_selected.erase(begin(m_selected), end(m_selected));
 	m_hasImage.erase(begin(m_hasImage), end(m_hasImage));
 	endRemoveRows();
-
-	setCellSize(size);
-
+	
 	beginInsertRows(index, 0, row * col);
 	m_selected = vector<bool>(row * col);
 	fill(begin(m_selected), end(m_selected), false);

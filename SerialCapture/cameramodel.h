@@ -6,11 +6,9 @@
 class CameraModel : public QAbstractListModel
 {
 	Q_OBJECT
-	Q_PROPERTY(QSize cellSize READ cellSize NOTIFY cellSizeChanged)
 	Q_PROPERTY(int rows READ rows NOTIFY rowsChanged)
 	Q_PROPERTY(int cols READ cols NOTIFY colsChanged)
 	int m_row, m_col;
-	QSize m_size;	// cell size, i.e for implementing zoom
 	std::vector<bool> m_selected, m_hasImage;
 	std::vector<QImage> m_buffer;
 public:
@@ -18,7 +16,7 @@ public:
 		BufferRole = Qt::UserRole + 1,
 		SelectedRole
 	};
-	CameraModel(int row, int col, const QSize& size, QObject *parent = 0);
+	CameraModel(int row, int col, QObject *parent = 0);
 	~CameraModel();
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -26,9 +24,6 @@ public:
 
 	int rows() const;
 	int cols() const;
-
-	QSize cellSize() const;
-	void setCellSize(const QSize &size);
 
 	// Convert 1D index to 2D index e.g. 11 -> 1x1
 	QPoint indexToPoint(int index) const;
@@ -43,7 +38,7 @@ public:
 public slots:
 	// Client calculate correct row and column, size is cell size in pixel
 	// NOTE: it will reset all data in model
-	void initModel(int row, int col, const QSize &size);
+	void initModel(int row, int col);
 
 	// Set all images in buffer to 1x1 black image
 	void clearBuffers();
@@ -64,7 +59,6 @@ protected:
 private:
 
 signals :
-	void cellSizeChanged(const QSize &size);
 	void rowsChanged(int row);
 	void colsChanged(int col);
 };
