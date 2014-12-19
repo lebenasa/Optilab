@@ -41,7 +41,7 @@ void SMInterface::loadProfile(int profile) {
 	m_size = QSizeF((1.0 - m_overlap) * sz.width() / 1000.0, (1.0 - m_overlap) * sz.height() / 1000.0);
 	double xlim = s.value("X_LIMIT", 100).toDouble();
 	double ylim = s.value("Y_LIMIT", 100).toDouble();
-	m_cols = xlim / m_size.width();	// Limit is stored in mm,
+	m_cols = xlim / m_size.width();		// Limit is stored in mm,
 	m_rows = ylim / m_size.height();	// Calibration is stored in um
 	
 	// Generate coordinate table
@@ -60,18 +60,20 @@ void SMInterface::alignToGrid() {
 }
 
 QPoint SMInterface::coordToIndex(const QPointF& pos) const {
-	size_t ix, iy;
-	for (ix = 0; ix < m_cols; ++ix) {
-		auto cellx = m_grid.at(ix).x();
-		if (pos.x() <= cellx)
-			break;
-	}
-	for (iy = 0; iy < m_rows; ++iy) {
-		auto celly = m_grid.at(iy).y();
-		if (pos.y() <= celly)
-			break;
-	}
-	return QPoint(ix, iy);
+	auto np = pos;
+	auto comp = [=](const QPointF& val) -> bool {
+		if (fabs(np.x() - val.x()) <= .00001 &&
+			fabs(np.y() - val.y()) <= .00001)
+			return true;
+		return false;
+	};
+	auto found = find_if(begin(m_grid), end(m_grid), comp);
+	if (found == end(m_grid))
+		return m_index;
+	int index = distance(begin(m_grid), found);
+	int col = index % m_rows;
+	int row = (index - col) / m_cols;
+	return QPoint(col, row);
 }
 
 QPointF SMInterface::indexToCoord(const QPoint& pos) const {
