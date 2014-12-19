@@ -24,6 +24,7 @@ public:
 
 	int rows() const;
 	int cols() const;
+	QPoint selectedCell() const;
 
 	// Convert 1D index to 2D index e.g. 11 -> 1x1
 	QPoint indexToPoint(int index) const;

@@ -43,6 +43,11 @@ int CameraModel::cols() const {
 	return m_col;
 }
 
+QPoint CameraModel::selectedCell() const {
+	auto p = find(begin(m_selected), end(m_selected), true);
+	return indexToPoint(p - begin(m_selected));
+}
+
 void CameraModel::initModel(int row, int col) {
 	auto index = this->createIndex(0, 0);
 	beginRemoveRows(index, 0, rowCount());
