@@ -76,6 +76,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_serialcapture.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="sminterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_sminterface.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_sminterface.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="camera.h">
@@ -91,6 +100,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="serialcapture.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="sminterface.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
