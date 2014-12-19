@@ -2,59 +2,14 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Window 2.0
 import QtQuick.Layouts 1.1
-//import QuickCam 1.0
-//import Stepper 1.0
+import QuickCam 1.0
 
 ApplicationWindow {
     id: window
     title: qsTr("Serial Capture Prototype")
-    width: 640
-    height: 480
+    width: 1280
+    height: 720
     visible: true
-
-//    Camera {
-//        id: src
-//    }
-//    Stepper {
-//        id: stepper
-//    }
-
-    property size src: "128x102"
-    function clearSelection() {
-        for (var i = 0; i < cameraArray.model; i++) {
-            cameraArray.itemAt(i).selected = false
-        }
-    }
-
-    function indexToPair(index) {
-        var col = index % cameraGrid.rows
-        var row = (index - col) / cameraGrid.columns
-//        console.log(col, row)
-        return Qt.point(~~col, ~~row)
-    }
-
-    function pairToIndex(pt) {
-        return pt.x + pt.y * cameraGrid.rows
-    }
-
-    function pointToPair(point) {
-        var x = ~~(point.x / src.width)
-        var y = ~~(point.y / src.height)
-        return Qt.point(x, y)
-    }
-
-    function pointToIndex(point) {
-        return pairToIndex(pointToPair(point))
-    }
-
-    function boxSelect(p1, p2) {
-
-    }
-
-    Component.onCompleted: {
-//        console.log(indexToPair(pairToIndex(Qt.point(3, 5))))
-//        cameraArray.itemAt(pointToIndex(Qt.point(400, 100))).selected = true
-    }
 
     SplitView {
         anchors.fill: parent
@@ -67,42 +22,45 @@ ApplicationWindow {
                 clip: true
                 Rectangle {
                     color: "#222"
-//                    width: src.sourceSize.width; height: src.sourceSize.height
-                    width: src.width * cameraGrid.columns
-                    height: src.height * cameraGrid.rows
+                    width: serialcapture.cellSize.width * cameraGrid.columns
+                    height: serialcapture.cellSize.height * cameraGrid.rows
                     Grid {
                         id: cameraGrid
                         spacing: 0
-                        columns: 10
-                        rows: 10
+                        columns: cammodel.cols
+                        rows: cammodel.rows
                         anchors.fill: parent
                         Repeater {
                             id: cameraArray
-                            model: 100
-//                            CameraItem {
-//                                id: cameraDelegate
-//                                width: src.sourceSize.width / 10
-//                                height: src.sourceSize.height / 10
-//                                blocked: true
-//                                renderParams: CameraItem.ScaledToItem
-//                                Connections {
-//                                    target: src
-//                                    onFrameReady: cameraDelegate.updateImage(frame)
-//                                }
-//                            }
+                            model: cammodel
                             Rectangle {
-                                id: cameraDelegate
-                                width: src.width; height: src.height
-                                color: "black"
-                                property bool highlight: false
-                                property bool selected: false
+                                id: delegateBorder
+                                width: serialcapture.cellSize.width
+                                height: serialcapture.cellSize.height
+                                color: "transparent"
                                 border.width: 1
-                                border.color: (selected) ? "yellow" : (highlight) ? "magenta" : "transparent"
+                                border.color: selected ? "yellow" : delegateMouse.containsMouse ? "magenta" : "green"
+                                CameraItem {
+                                    id: cameraDelegate
+                                    anchors.fill: parent
+                                    anchors.margins: 1
+                                    blocked: false
+                                    source: buffer
+                                    renderParams: CameraItem.ScaledToItem
+                                }
+//                                MouseArea {
+//                                    id: delegateMouse
+//                                    anchors.fill: parent
+//                                    hoverEnabled: true
+//                                    onPressed: {
+//                                        if (mouse.button == Qt.LeftButton) {
+//                                            cammodel.clearSelection()
+//                                            selected = true
+//                                        }
+//                                    }
+//                                }
                             }
                         }
-                    }
-                    MouseArea {
-                        anchors.fill: parent
                     }
                 }
             }
@@ -114,6 +72,26 @@ ApplicationWindow {
             anchors {
                 right: parent.right; top: parent.top;
                 bottom: parent.bottom
+            }
+            Column {
+                spacing: 5
+                anchors.fill: parent
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "%1x%2".arg(stepper.x).arg(stepper.y)
+                    color: "magenta"
+                }
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "%1x%2".arg(istep.cellPos.x).arg(istep.cellPos.y)
+                    color: "magenta"
+                }
+                Button {
+                    id: moveButton
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Move"
+                    onClicked: serialcapture.moveToSelected()
+                }
             }
         }
     }
