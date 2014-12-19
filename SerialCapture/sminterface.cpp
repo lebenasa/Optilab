@@ -36,7 +36,7 @@ void SMInterface::loadProfile(int profile) {
 	// Initialize necessary data
 	QSettings s{ "Miconos", "Optilab", this };
 	QString name = QString{ "PROFILE_%1" }.arg(profile);
-	auto sz = s.value(name).toSizeF();
+	auto sz = s.value(name, QSizeF(1000.0, 1000.0)).toSizeF();
 	m_size = QSize((1.0 - m_overlap) * sz.width(), (1.0 - m_overlap) * sz.height());
 	double xlim = s.value("X_LIMIT", 100).toDouble();
 	double ylim = s.value("Y_LIMIT", 100).toDouble();
