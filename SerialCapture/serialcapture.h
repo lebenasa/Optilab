@@ -33,6 +33,8 @@ public slots:
 
 	void moveToSelected();
 
+	void show();
+
 signals:
 	void cellSizeChanged(const QSize &size);
 	void blockChanged(bool);

@@ -35,11 +35,12 @@ ApplicationWindow {
                             model: cammodel
                             Rectangle {
                                 id: delegateBorder
+                                property bool highlighted
                                 width: serialcapture.cellSize.width
                                 height: serialcapture.cellSize.height
                                 color: "transparent"
                                 border.width: 1
-                                border.color: selected ? "yellow" : delegateMouse.containsMouse ? "magenta" : "green"
+                                border.color: selected ? "yellow" : highlighted ? "magenta" : "green"
                                 CameraItem {
                                     id: cameraDelegate
                                     anchors.fill: parent
@@ -48,19 +49,12 @@ ApplicationWindow {
                                     source: buffer
                                     renderParams: CameraItem.ScaledToItem
                                 }
-//                                MouseArea {
-//                                    id: delegateMouse
-//                                    anchors.fill: parent
-//                                    hoverEnabled: true
-//                                    onPressed: {
-//                                        if (mouse.button == Qt.LeftButton) {
-//                                            cammodel.clearSelection()
-//                                            selected = true
-//                                        }
-//                                    }
-//                                }
                             }
                         }
+                    }
+                    MouseArea {
+                        id: gridMouse
+                        anchors.fill: parent
                     }
                 }
             }
